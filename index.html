@@ -2,14 +2,14 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>SDDS: Strategia Dev Domain Switcher</title>
+	<title>Strategia Dev Domain Switcher</title>
 	<link rel="stylesheet" href="styles/bookmarklet.css">
 </head>
 
 <body>
 <h1>Букмарклет для переключения доменов с&nbsp;разработки на&nbsp;продакшен</h1>
 
-<div class="bookmarklet"><a data-text="Strategia Dev Domain Switcher" id="strategia_bookmarklet" href="javascript:(function(){
+<div class="bookmarklet"><a data-text="Переключатель доменов" id="strategia_bookmarklet" href="javascript:(function(){
 	var sd = 'flat';
 	var s = [
 		['kvartirka.com', sd + '.dev.kvartirka.pro'],
@@ -27,7 +27,7 @@
 		if (swtch(s[i][0], s[i][1])) {return;}
 		if (swtch(s[i][1], s[i][0])) {return;}
 	}
-})();">Strategia Dev Domain Switcher</a></div>
+})();">Переключатель доменов</a></div>
 
 <div id="subdomain">Поддомен <input id="subdomain_input" type="text" value="flat" /><button id="subdomain_button">Обновить</button></div>
 
