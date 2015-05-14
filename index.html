@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SDDS: Strategia Dev Domain Switcher</title>
+<style>
+	body{
+		padding: 40px 200px 0;
+		text-align: left;
+		margin: 0 auto;
+		font-size: 18px;
+		font-family: "Arial";
+	}
+
+	.bookmarklet {
+		text-align: center;
+	}
+
+	a {
+		display: inline-block;
+		margin-top: 5px;
+		padding: 30px;
+		border-radius: 16px;
+		background: #ccc;
+		color: #666;
+		text-decoration: none;
+		text-align: center;
+	}
+
+	a:after {
+		display: block;
+		content: '(Тащи в закладоньки!)';
+		font-style: italic;
+	}
+
+	.example {
+		margin: 10px 0 15px 0;
+		position: relative;
+		display: inline-block;
+		clear: both;
+		float: left;
+	}
+
+	.example:after {
+		content: '\2938';
+		display: inline-block;
+		position: absolute;
+		width: 0;
+		line-height: 0;
+		font-size: 120%;
+		top: 50%;
+		right: -4px;
+	}
+
+	.example:before {
+		content: '\2938';
+		display: inline-block;
+		position: absolute;
+		width: 0;
+		line-height: 0;
+		font-size: 120%;
+		left: -6px;
+		top: 55%;
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		-ms-transform: rotate(180deg);
+		-o-transform: rotate(180deg);
+		transform: rotate(180deg);
+	}
+
+	code {
+		color: green;
+	}
+
+	#subdomain {
+		margin-top: 10px;
+		font-size: 20px;
+		text-align: center;
+	}
+
+	#subdomain_input {
+		width: 120px;
+		padding: 5px;
+		border-radius: 6px;
+		font-size: 20px;
+		font-family: monospace;
+		margin-left: 10px;
+	}
+
+	#subdomain_button {
+		padding: 7px;
+		border-radius: 6px;
+		margin-left: 5px;
+		font-size: 16px;
+		background-color: #f0f0f0;
+	}
+
+</style>
+</head>
+
+<h1>Букмарклет для переключения доменов с&nbsp;разработки на&nbsp;продакшен</h1>
+
+<div class="bookmarklet"><a data-text="Strategia Dev Domain Switcher" id="strategia_bookmarklet" href="javascript:(function(){
+	var sd = 'flat';
+	var s = [
+		['kvartirka.com', sd + '.dev.kvartirka.pro'],
+		['natarelochke.ru', 'plate.dev'],
+		['gornolyzhki.ru', 'gornolyzhki.dev'],
+	];
+	var swtch = function(from, to) {
+		if (location.hostname.indexOf(from) >= 0) {
+			location.hostname = location.hostname.replace(from, to);
+			return true;
+		}
+		return false;
+	};
+	for (var i=0; i<s.length; i++) {
+		if (swtch(s[i][0], s[i][1])) {return;}
+		if (swtch(s[i][1], s[i][0])) {return;}
+	}
+})();">Strategia Dev Domain Switcher</a></div>
+
+<div id="subdomain">Поддомен <input id="subdomain_input" type="text" value="flat" /><button id="subdomain_button">Обновить</button></div>
+
+<p>По клику букмарклет перенаправляет браузер с&nbsp;продакшена на&nbsp;тот же адрес на&nbsp;сервере разработки. Или наоборот! Можно нажимать на&nbsp;любых страницах, работать будет только на&nbsp;нужных доменах:</p>
+<code>
+	<div class="example"
+		>http://kazan.kvartirka.com/#price=3300&amp;currencyId=643<br/>
+		http://flat.dev.kvartirka.pro/#price=3300&amp;currencyId=643</div>
+
+	<div class="example"
+		>https://kvartirka.com/user/login/<br/>
+		https://flat.dev.kvartirka.pro/user/login/</div>
+
+	<div class="example"
+		>http://omsk.natarelochke.ru/restaurant/1636/<br/>
+		http://omsk.plate.dev/restaurant/1636/</div>
+
+	<div class="example"
+		>http://gornolyzhki.ru<br/>
+		http://gornolyzhki.dev</div>
+</code>
+
+<script>
+(function() {
+	function addListener(element, eventName, handler) {
+	  if (element.addEventListener) {
+	    element.addEventListener(eventName, handler, false);
+	  }
+	  else if (element.attachEvent) {
+	    element.attachEvent('on' + eventName, handler);
+	  }
+	  else {
+	    element['on' + eventName] = handler;
+	  }
+	}
+
+	function update_subdomain() {
+		var new_sd = document.getElementById('subdomain_input').value;
+		var a = document.getElementById('strategia_bookmarklet');
+
+		a.href = a.href.replace(/var sd = '[a-z]+';/m, "var sd = '" + new_sd + "';");
+
+		var new_text = a.getAttribute('data-text') + ". Поддомен " + new_sd + ".";
+		if ('textContent' in a) {
+		    a.textContent = new_text;
+		} else {
+		    a.innerText = new_text;
+		}
+	}
+
+	addListener(document.getElementById('subdomain_button'), 'click', update_subdomain);
+	addListener(document.getElementById('subdomain_input'), 'keyup', update_subdomain);
+})();
+</script>
