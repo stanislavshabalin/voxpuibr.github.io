@@ -1,1 +1,1 @@
-# voxpuibr.github.io
+Small domain switcher bookmarklet constructor for Strategia projects
