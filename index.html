@@ -68,7 +68,7 @@
 		var new_sd = document.getElementById('subdomain_input').value;
 		var a = document.getElementById('strategia_bookmarklet');
 
-		a.href = a.href.replace(/var sd = '[a-z]+';/m, "var sd = '" + new_sd + "';");
+		a.href = decodeURIComponent(a.href).replace(/var\ssd\s=\s'[a-z]+';/m, "var sd = '" + new_sd + "';");
 
 		var new_text = a.getAttribute('data-text') + ". Поддомен " + new_sd + ".";
 		if ('textContent' in a) {
